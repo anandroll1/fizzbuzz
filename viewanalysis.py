@@ -7,7 +7,7 @@ def get_header(header):
     return mappings.get(header)
 
 def main():
-    path = "C:\\Users\\Anand\\Downloads\\"
+    path = "/Users/anand/Downloads"
     file = open(path + "blogdata2.csv")
     reader = csv.reader(file)
     file2 = open("result4", "w")

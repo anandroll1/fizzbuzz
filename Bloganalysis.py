@@ -7,11 +7,12 @@ def get_header(header):
     return mappings.get(header)
 
 def main():
-    path = "C:\\Users\\Anand\\Downloads\\"
+    path = "/Users/anand/Downloads/"
     file = open(path + "blogdata2.csv")
     reader = csv.reader(file)
-    file2 = open("result4", "w")
+    file2 = open("resultnew", "w")
     res =""
+    bouncereslt=""
 
     header_flag = False
     def subscribers():
@@ -19,25 +20,32 @@ def main():
     return
     def bounceRate():
         if line[get_header('bounce1')]>line[get_header('bounce3')]>line[get_header('bounce5')]:
-            bounce="GoodDB"
-            return (bounce)
+            bouncereslt="GoodDB"
+            return bounce
         elif line[get_header('bounce1')]<line[get_header('bounce3')]<line[get_header('bounce5')]:
-            bounce="BadIB"
-            return (bounce)
+            bouncereslt="BadIB"
+            return bounce
         elif line[get_header('bounce1')]>line[get_header('bounce5')]:
-            bounce="DB"
-            return (bounce)
+            bouncereslt="DB"
+            return bounce
         elif line[get_header('bounce1')]<line[get_header('bounce5')]:
-            bounce="IB"
-            return (bounce)
+            bouncereslt="IB"
+            return bounce
         elif line[get_header('bounce1')]==line[get_header('bounce5')]:
-            bounce="SameB"
-            return (bounce)
+            bouncereslt="SameB"
+            return bounce
     def sourceRate():
         source = [line[get_header('source1')], line[get_header('source2')], line[get_header('source3')],
                   line[get_header('source4')], line[get_header('source5')], line[get_header('source6')],
                   line[get_header('source7')], line[get_header('source8')], line[get_header('source9')],
                   line[get_header('source10')]]
+        if line[get_header('views1')] == "NA":
+            if line[get_header('views2')] == "NA":
+                if line[get_header('views3')] == "NA":
+                    line[get_header('views3')] = line[get_header('views4')]
+                line[get_header('views2')] = line[get_header('views3')]
+            line[get_header('views1')] = line[get_header('views2')]
+
         sourcecount = (Counter(source))
         c = (max(sourcecount, key=sourcecount.get))
         value = (sourcecount[c])
@@ -50,92 +58,64 @@ def main():
         c = (max(sourcecount, key=sourcecount.get))
         value = (sourcecount[c])
         secondary = value
+        # return secondary
         if primary == secondary:
-            if res == "DV":
-                file2.write(line[get_header('name')] + " having less performance\n")
-            elif res == "IV":
-                file2.write(line[get_header('name')] + " well performed blog \n")
-            elif res == "NC":
-                file2.write(line[get_header('name')] + " it is working with nochange in views so check with date\n")
-            elif res == "OD":
-                file2.write(line[get_header('name')] + " topic might be is getting outdated\n")
+            if bounceRate()=="GoodDB":
+                file2.write(line[get_header('name')] + " is working good with "+bounceRate()+"\n")
+                return (sourcereslt)
+            elif bounceRate() == "BadIB":
+                file2.write(line[get_header('name')] + " poor performance with "+bounceRate()+"\n")
+                return (sourcereslt)
+            elif bounceRate() == "DB":
+                file2.write(line[get_header('name')] + " check with change in source and make it more published, since it has "+bounceRate()+"\n")
+                return (sourcereslt)
+            elif bounceRate() == "IB":
+                file2.write(line[get_header('name')] + " check with avg time and title matching content, either cta or out dated content or not related to what they are looking for"+"\n")
+                return (sourcereslt)
+
         elif c == "organic":
-            if res == "DV":
-                file2.write(line[get_header('name')] + " look for bounce rate and title trend status\n")
-            elif res == "IV":
-                file2.write(line[get_header(
-                    'name')] + " well performed blog because of title and worth to write another blog \n")
-            elif res == "NC":
-                file2.write(line[get_header(
-                    'name')] + " it is working good so check with bounce rate n crt content if needed\n")
-            elif res == "OD":
-                file2.write(
-                    line[get_header('name')] + " topic might be is getting outdated remove check with date again\n")
+            if bounceRate()=="GoodDB":
+                file2.write(line[get_header('name')] + " is working good with "+bounceRate()+"in "+c+", write more with titlename\n")
+                return sourcereslt
+            elif bounceRate() == "BadIB":
+                file2.write(line[get_header('name')] + " poor performance with "+bounceRate()+"in "+c+", check avgtime content mismatch or cta\n")
+                return sourcereslt
+            elif bounceRate() == "DB":
+                file2.write(line[get_header('name')] + " it created interest to see more, since it has "+bounceRate()+"in "+c+"\n")
+                return sourcereslt
+            elif bounceRate() == "IB":
+                file2.write(line[get_header('name')] + " check with avg time and title matching content, either cta or out dated content or not related to what they are looking for"+bounceRate()+"in "+c+"\n")
+                return sourcereslt
         elif c == "direct":
-            if res == "DV":
-                file2.write(
-                    line[get_header('name')] + " check with previous linked blog and title didn't worked well\n")
-            elif res == "IV":
-                file2.write(line[get_header('name')] + " previous link is well performed blog \n")
-            elif res == "NC":
-                file2.write(line[get_header(
-                    'name')] + " it is working with nochange in views so check bounce rate and crt title or content if needed\n")
-            elif res == "OD":
-                file2.write(line[get_header('name')] + " check with bounce rate and change linked blog and title\n")
+            if bounceRate()=="GoodDB":
+                file2.write(line[get_header('name')] + " change title for to increase organic "+bounceRate()+"in "+c+", write more with such content\n")
+                return sourcereslt
+            elif bounceRate() == "BadIB":
+                file2.write(line[get_header('name')] + " see the previous blogs to where it linked, since it has "+bounceRate()+"in "+c+"\n")
+                return sourcereslt
+            elif bounceRate() == "DB":
+                file2.write(line[get_header('name')] + " content is good so try some title for oraganic views, since it has "+bounceRate()+"in "+c+"\n")
+                return sourcereslt
+            elif bounceRate() == "IB":
+                file2.write(line[get_header('name')] + " check out dated content or not related to what they are looking for "+bounceRate()+"in "+c+"\n")
+                return sourcereslt
         elif c == "social":
-            if res == "DV":
-                file2.write(line[get_header('name')] + " topic trend decreases due to time\n")
-            elif res == "IV":
+            if bounceRate() == "GoodDB":
                 file2.write(line[get_header(
-                    'name')] + " it is trending topic expected as coming era, write such kind with more content bounce rate to be considered for content\n")
-            elif res == "NC":
+                    'name')] + " change title for to increase organic " + bounceRate() + "in " + c + ", write more with such content\n")
+                return sourcereslt
+            elif bounceRate() == "BadIB":
                 file2.write(line[get_header(
-                    'name')] + " we can write more of such blogs but check bounce rate to crt title or content of this blog\n")
-            elif res == "OD":
+                    'name')] + " see the previous blogs to where it linked, since it has " + bounceRate() + "in " + c + "\n")
+                return sourcereslt
+            elif bounceRate() == "DB":
                 file2.write(line[get_header(
-                    'name')] + " try reposting in social media and depending on bounce rate change content and title\n")
-        if primary == secondary:
-            if res == "DV":
-                print(line[get_header('name')] + " having less performance")
-            elif res == "IV":
-                print(line[get_header('name')] + " well performed blog")
-            elif res == "NC":
-                print(line[get_header('name')] + " it is working with nochange in views so check with date")
-            elif res == "OD":
-                print(line[get_header('name')] + " topic might be is getting outdated")
-        elif primary == "organic":
-            if res == "DV":
-                print(line[get_header('name')] + " look for bounce rate and title trend status")
-            elif res == "IV":
-                print(
-                    line[get_header('name')] + " well performed blog because of title and worth to write another blog ")
-            elif res == "NC":
-                print(
-                    line[get_header('name')] + " it is working good so check with bounce rate n crt content if needed")
-            elif res == "OD":
-                print(line[get_header('name')] + " topic might be is getting outdated remove check with date again")
-        elif primary == "direct":
-            if res == "DV":
-                print(line[get_header('name')] + " check with previous linked blog and title didn't worked well")
-            elif res == "IV":
-                print(line[get_header('name')] + " previous link is well performed blog ")
-            elif res == "NC":
-                print(line[get_header(
-                    'name')] + " it is working with nochange in views so check bounce rate and crt title or content if needed")
-            elif res == "OD":
-                print(line[get_header('name')] + " check with bounce rate and change linked blog and title")
-        elif primary == "social":
-            if res == "DV":
-                print(line[get_header('name')] + " topic trend decreases due to time")
-            elif res == "IV":
-                print(line[get_header(
-                    'name')] + " it is trending topic expected as coming era, write such kind with more content bounce rate to be considered for content")
-            elif res == "NC":
-                print(line[get_header(
-                    'name')] + " we can write more of such blogs but check bounce rate to crt title or content of this blog")
-            elif res == "OD":
-                print(line[get_header(
-                    'name')] + " try reposting in social media and depending on bounce rate change content and title")
+                    'name')] + " content is good so try some title for oraganic views, since it has " + bounceRate() + "in " + c + "\n")
+                return sourcereslt
+            elif bounceRate() == "IB":
+                file2.write(line[get_header(
+                    'name')] + " check out dated content or not related to what they are looking for " + bounceRate() + "in " + c + "\n")
+                return sourcereslt
 
     for line in reader:
         if not header_flag:
@@ -145,6 +125,8 @@ def main():
             header_flag = True
         else:
             for col in range(0, 30):
-                if
+                print (sourceRate())
+if __name__ == '__main__':
+    main()
 
 
