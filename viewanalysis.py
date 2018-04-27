@@ -7,7 +7,7 @@ def get_header(header):
     return mappings.get(header)
 
 def main():
-    path = "/Users/anand/Downloads"
+    path = "/Users/anand/Downloads/"
     file = open(path + "blogdata2.csv")
     reader = csv.reader(file)
     file2 = open("result4", "w")
@@ -23,7 +23,7 @@ def main():
             header_flag = True
         else:
             record = ""
-            for col in range(0, 30):
+            for col in range(0, 26):
                 record += (line[col] + ", ")
 
             views = "{}, {}, {}, {}, {}".format(
@@ -34,7 +34,7 @@ def main():
                 line[get_header('views5')]
             )
 
-            # print(views)
+            print(views)
 
             if line[get_header('views1')] == "NA":
                 if line[get_header('views2')] == "NA":
@@ -168,6 +168,6 @@ def main():
     return res
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+main()
 
