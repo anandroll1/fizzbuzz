@@ -3,7 +3,7 @@ from collections import Counter
 
 mappings = {}
 line = ""
-file2 = open("resultnew", "w")
+file2 = open("result5", "w")
 sourcereslt=""
 
 
@@ -32,8 +32,6 @@ def main():
                 record += (line[col] + ", ")
             print (sourceRate(line))
                 # print(sourcereslt)
-
-
 
 def subscribers():
     pass
@@ -74,27 +72,28 @@ def sourceRate(line):
         del sourcecount[c]
         c = (max(sourcecount, key=sourcecount.get))
         value = (sourcecount[c])
-    primary = value
+    primary = c
     del sourcecount[c]
     c = (max(sourcecount, key=sourcecount.get))
     value = (sourcecount[c])
-    secondary = value
+    secondary = c
     # return secondary
     if primary == secondary:
         if bounceRate(line)=="GoodDB":
             file2.write(line[get_header('name')] + " is working good with "+bounceRate(line)+"\n")
-            return (sourcereslt)
+            return sourcereslt
         elif bounceRate(line) == "BadIB":
             file2.write(line[get_header('name')] + " poor performance with "+bounceRate(line)+"\n")
-            return (sourcereslt)
+            return sourcereslt
         elif bounceRate(line) == "DB":
             file2.write(line[get_header('name')] + " check with change in source and make it more published, since it has "+bounceRate(line)+"\n")
-            return (sourcereslt)
+            return sourcereslt
         elif bounceRate(line) == "IB":
-            file2.write(line[get_header('name')] + " check with avg time and title matching content, either cta or out dated content or not related to what they are looking for"+"\n")
-            return (sourcereslt)
+            file2.write(line[get_header('name')] + " check with avg time and title matching content, "
+                                                   "either cta or out dated content or not related to what they are looking for "+"\n")
+            return sourcereslt
 
-    elif c == "organic":
+    elif primary == "organic":
         if bounceRate(line)=="GoodDB":
             file2.write(line[get_header('name')] + " is working good with "+bounceRate(line)+" in "+c+", write more with titlename\n")
             return sourcereslt
@@ -105,9 +104,9 @@ def sourceRate(line):
             file2.write(line[get_header('name')] + " it created interest to see more, since it has "+bounceRate(line)+" in "+c+"\n")
             return sourcereslt
         elif bounceRate(line) == "IB":
-            file2.write(line[get_header('name')] + " check with avg time and title matching content, either cta or out dated content or not related to what they are looking for"+bounceRate(line)+" in "+c+"\n")
+            file2.write(line[get_header('name')] + " check with avg time and title matching content, either cta or out dated content or not related to what they are looking for "+bounceRate(line)+" in "+c+"\n")
             return sourcereslt
-    elif c == "direct":
+    elif primary == "direct":
         if bounceRate(line)=="GoodDB":
             file2.write(line[get_header('name')] + " change title for to increase organic "+bounceRate(line)+" in "+c+", write more with such content\n")
             return sourcereslt
@@ -120,7 +119,7 @@ def sourceRate(line):
         elif bounceRate(line) == "IB":
             file2.write(line[get_header('name')] + " check out dated content or not related to what they are looking for "+bounceRate(line)+" in "+c+"\n")
             return sourcereslt
-    elif c == "social":
+    elif primary == "social":
         if bounceRate(line) == "GoodDB":
             file2.write(line[get_header(
                 'name')] + " change title for to increase organic " + bounceRate(line) + " in " + c + ", write more with such content\n")
